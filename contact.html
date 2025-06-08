@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | AMA Foundation</title>
+    <style>
+        :root {
+            --orange: #FF4500;
+            --dark: #181818;
+            --light: #fff;
+            --gray: #232323;
+            --beige: #f5ede7;
+            --orange-dark: #c34a00;
+            --accent: #FF7F50;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+        }
+        a {
+            color: var(--orange);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #fff;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--gray);
+            padding: 0.5rem 2rem;
+            box-shadow: 0 2px 16px 0 rgba(0,0,0,0.30);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            height: 64px;
+            border-bottom: 2px solid var(--orange);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 50px;
+            margin-right: 16px;
+        }
+        .logo-text {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .logo-orange { color: var(--orange); }
+        .logo-black { color: var(--light); }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            align-items: center;
+            height: 64px;
+        }
+        .nav-links li {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        .nav-links a {
+            color: var(--light);
+            font-weight: 500;
+            padding: 8px 18px;
+            border-radius: 24px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav-links a.active, .nav-links a:hover {
+            background: var(--orange);
+            color: var(--dark);
+        }
+        .profile-dropdown-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-left: 0.5rem;
+        }
+        .profile-avatar-btn {
+            border: none;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+            outline: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 100%;
+            background: #fff2e0;
+            object-fit: cover;
+            border: 2px solid var(--orange-dark);
+            box-shadow: 0 2px 12px #ffc28a44;
+            font-size: 1.25em;
+            font-weight: 900;
+            color: var(--orange-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: box-shadow 0.2s, border 0.2s;
+        }
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 110%;
+            min-width: 330px;
+            background: #232323;
+            color: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 36px #000a;
+            padding: 30px 24px 18px 24px;
+            z-index: 200;
+            flex-direction: column;
+            align-items: center;
+            border: 1.5px solid var(--orange);
+            animation: fadeInDrop 0.22s;
+        }
+        .profile-dropdown.open {
+            display: flex;
+        }
+        .profile-dropdown .profile-pic {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 11px;
+            border: 3px solid var(--orange);
+            background: #fff;
+            box-shadow: 0 3px 16px #ff450088;
+        }
+        .profile-dropdown .profile-initial {
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            background: var(--orange-dark);
+            color: #fff;
+            font-size: 2.3em;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 11px;
+        }
+        .profile-dropdown .profile-name {
+            font-weight: 800;
+            font-size: 1.24em;
+            color: var(--light);
+            margin-bottom: 3px;
+            text-align: center;
+        }
+        .profile-dropdown .profile-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            font-size: 1.07em;
+            margin-bottom: 7px;
+        }
+        .profile-dropdown .detail-label {
+            color: #ffbd80;
+            min-width: 92px;
+            font-weight: 600;
+        }
+        .profile-dropdown .detail-value {
+            color: #fff;
+            font-weight: 500;
+            flex: 1;
+        }
+        .profile-dropdown .logout-btn {
+            background: var(--danger, #ff3300);
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            font-size: 1em;
+            padding: 0.6em 1.7em;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            width: 100%;
+            transition: background 0.15s;
+        }
+        .profile-dropdown .logout-btn:hover {
+            background: #a62100;
+        }
+        .profile-dropdown .edit-btn {
+            background: var(--orange);
+            color: #181818;
+            border: none;
+            border-radius: 7px;
+            font-size: 1em;
+            padding: 0.6em 1.7em;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-top: 8px;
+            width: 100%;
+            transition: background 0.15s;
+        }
+        .profile-dropdown .edit-btn:hover {
+            background: var(--orange-dark);
+            color: #fff;
+        }
+        @keyframes fadeInDrop {
+            from { opacity: 0; transform: translateY(18px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        /* Modal Box: More compact, centered, and visually pleasing */
+        .modal-overlay {
+            position: fixed; z-index: 9999; left: 0; top: 0; width: 100vw; height: 100vh;
+            background: rgba(20,20,20,0.84); display: flex; align-items: center; justify-content: center;
+        }
+        .modal {
+            background: var(--gray, #232323);
+            color: var(--light, #fff);
+            border-radius: 16px;
+            box-shadow: 0 8px 36px #000a;
+            padding: 28px 34px 16px 34px;
+            min-width: 320px;
+            max-width: 440px;
+            width: 96vw;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin: auto;
+            position: relative;
+            left: 0; right: 0; top: 0; bottom: 0;
+        }
+        .modal h2 {
+            margin-top: 0;
+            color: var(--orange, #FF4500);
+            text-align: center;
+            font-size: 1.18rem;
+            margin-bottom: 1.1em;
+            letter-spacing: 0.03em;
+        }
+        .modal label {
+            font-weight: 600;
+            color: var(--orange, #FF4500);
+            letter-spacing: 0.05em;
+            margin-bottom: 1px;
+            font-size: 0.97em;
+        }
+        .required {
+            color: var(--accent, #FF7F50);
+            font-weight: bold;
+            margin-left: 2px;
+        }
+        .modal-form-group {
+            margin-bottom: 17px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+        }
+        .modal input {
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            padding: 7px 10px;
+            border: 1.5px solid var(--orange, #FF4500);
+            border-radius: 6px;
+            background: linear-gradient(100deg, #232323 60%, #1d1d1d 100%);
+            color: var(--light, #fff);
+            font-size: 1em;
+            outline: none;
+            transition: border 0.18s, box-shadow 0.18s;
+            box-shadow: 0 1px 2px #1818181a inset;
+        }
+        .modal input:focus {
+            border-color: var(--accent, #FF7F50);
+            background: #232323;
+            box-shadow: 0 0 0 2px var(--orange, #ff4500)33;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: center; /* center horizontally */
+            gap: 1rem;
+            margin-top: 8px;
+        }
+        .modal-btn {
+            font-size: 1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s;
+        }
+        .modal-btn.cancel {
+            background: var(--gray, #232323);
+            color: var(--light, #ffe7e0);
+            border: 1.5px solid #555;
+        }
+        .modal-btn.cancel:hover { background: #181818; }
+        .modal-btn.save {
+            background: var(--orange, #FF4500);
+            color: var(--dark, #181818);
+        }
+        .modal-btn.save:hover {
+            background: var(--accent, #FF7F50);
+            color: var(--dark, #181818);
+        }
+        @media (max-width: 500px) {
+            .modal { min-width: 0; max-width: 97vw; padding: 12px 4px; }
+        }
+        main {
+            background: var(--dark);
+        }
+        .contact-hero {
+            text-align: center;
+            padding: 56px 0 24px 0;
+            background: linear-gradient(120deg, var(--orange) 12%, var(--dark) 100%);
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+        .contact-hero h1 {
+            font-size: 2.7rem;
+            font-weight: 900;
+            color: var(--light);
+            margin: 0 0 0.5rem 0;
+            letter-spacing: 2px;
+        }
+        .contact-orange { color: var(--orange); }
+        .contact-hero p {
+            color: #ffe7e0;
+            font-size: 1.17rem;
+            margin: 0;
+        }
+        .contact-wrap-onlyform {
+            max-width: 1050px;
+            margin: 56px auto;
+            background: var(--beige);
+            border-radius: 32px;
+            box-shadow: 0 4px 24px #000a;
+            padding: 64px 48px 48px 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+        }
+        .contact-title {
+            font-size: 2.15rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 32px;
+            letter-spacing: 1px;
+        }
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            width: 100%;
+            max-width: 500px;
+        }
+        .contact-form label {
+            color: var(--dark);
+            font-size: 1.04rem;
+            margin-bottom: 0.15rem;
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+        .contact-form input, .contact-form textarea {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid var(--orange);
+            color: var(--dark);
+            padding: 8px 4px;
+            font-size: 1.12rem;
+            width: 100%;
+            outline: none;
+            margin-bottom: 2px;
+            transition: border-color 0.2s;
+        }
+        .contact-form input:focus, .contact-form textarea:focus {
+            border-bottom: 2.5px solid var(--dark);
+        }
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+        .contact-form button {
+            background: var(--orange);
+            color: var(--light);
+            border: none;
+            border-radius: 32px;
+            padding: 13px 0;
+            font-size: 1.18rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 18px;
+            box-shadow: 0 2px 12px #ff450066;
+            width: 100%;
+            transition: background 0.15s, color 0.15s;
+        }
+        .contact-form button:hover {
+            background: var(--dark);
+            color: var(--orange);
+            border: 2px solid var(--orange);
+        }
+        .contact-bottom-row {
+            width: 100%;
+            margin-top: 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .contact-details {
+            color: var(--dark);
+            font-size: 1.18rem;
+            line-height: 1.8;
+        }
+        .contact-details strong {
+            font-size: 1.15rem;
+            color: var(--orange);
+            display: block;
+            margin-bottom: 3px;
+        }
+        .contact-social {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            font-size: 2.2rem;
+            margin-top: 3px;
+        }
+        .contact-social a {
+            color: var(--orange);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 2.1rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .contact-social a:hover {
+            background: var(--orange);
+            color: var(--beige);
+        }
+        /* Footer */
+        footer {
+            background: var(--gray);
+            color: var(--light);
+            padding: 0;
+            margin-top: 100px;
+        }
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 48px 30px 16px 30px;
+            border-bottom: 1.5px solid var(--orange);
+        }
+        .footer-section h3 {
+            color: var(--orange);
+            margin-bottom: 12px;
+            font-size: 1.18rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .footer-section p, .footer-section ul {
+            color: #ffe7e0;
+            margin: 0 0 12px 0;
+            font-size: 1rem;
+        }
+        .footer-section ul {
+            padding: 0;
+            list-style: none;
+        }
+        .footer-section ul li {
+            margin-bottom: 6px;
+        }
+        .footer-section ul li a {
+            color: #ffe7e0;
+            transition: color 0.2s;
+        }
+        .footer-section ul li a:hover {
+            color: var(--orange);
+        }
+        .footer-orange { color: var(--orange); }
+        .footer-bottom {
+            text-align: center;
+            padding: 16px 0 10px 0;
+            background: #151515;
+            color: #ffe7e0;
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+        }
+        @media (max-width: 1100px) {
+            .footer-container {
+                flex-wrap: wrap;
+                padding: 36px 15px 12px 15px;
+                gap: 40px;
+            }
+            .footer-bottom {
+                padding: 16px 0 10px 0;
+                text-align: center;
+            }
+        }
+        @media (max-width: 700px) {
+            .footer-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 24px;
+                padding: 24px 10px 8px 10px;
+            }
+            .footer-section {
+                min-width: 0;
+            }
+            .footer-bottom {
+                padding: 14px 0 9px 0;
+                text-align: center;
+                font-size: 0.97rem;
+            }
+        }
+    </style>
+    <!-- Simple social icons (FontAwesome CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <!-- Profile Avatar/Login JS -->
+    <script type="module">
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+
+        const supabase = createClient(
+            'https://twayczneiujxliwxphps.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3YXljem5laXVqeGxpd3hwaHBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc3MjIyMTgsImV4cCI6MjA2MzI5ODIxOH0.A5K0jX4REKtNE_tQG_L4aWReFaXpWN-OEEKoa8MqqNY'
+        );
+
+        function formatName(name) {
+            if (!name) return "";
+            return name
+                .split(/[\s_]+/)
+                .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+                .join(' ');
+        }
+
+        async function fetchProfileDetails(email) {
+            let { data, error } = await supabase
+                .from('registrations')
+                .select('full_name,age,team,address,phone')
+                .eq('email', email)
+                .single();
+            if (data) return data;
+            return { full_name: "--", age: "--", team: "--", address: "--", phone: "--" };
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            supabase.auth.getSession().then(async ({ data: { session } }) => {
+                if (session && session.user) {
+                    const user = session.user;
+                    let displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0];
+                    let email = user.email;
+                    let avatarUrl = user.user_metadata?.avatar_url || "";
+                    let details = await fetchProfileDetails(email);
+                    showProfileDropdown(
+                        details.full_name || displayName,
+                        email,
+                        avatarUrl,
+                        details.age,
+                        details.address,
+                        details.team,
+                        details.phone
+                    );
+                    let loginBtnLi = document.getElementById('nav-login-btn-li');
+                    if (loginBtnLi) loginBtnLi.remove();
+                }
+            });
+
+            window.showProfileDropdown = function(name, email, avatarUrl, age, address, team, phone) {
+                let nav = document.querySelector('.nav-links');
+                let profileDropdown = document.querySelector('.profile-dropdown-container');
+                if (!profileDropdown) {
+                    profileDropdown = document.createElement('li');
+                    profileDropdown.className = 'profile-dropdown-container';
+                    profileDropdown.innerHTML =
+                        `<button class="profile-avatar-btn" id="profile-avatar-btn" aria-label="User menu">
+                            <span class="header-avatar" id="user-avatar-header"></span>
+                        </button>
+                        <div class="profile-dropdown" id="profile-dropdown-menu">
+                            <div id="profile-dropdown-pic"></div>
+                            <div class="profile-name" id="profile-dropdown-name"></div>
+                            <div class="profile-row" id="profile-dropdown-email"></div>
+                            <div class="profile-row" id="profile-dropdown-phone"></div>
+                            <div class="profile-row" id="profile-dropdown-address"></div>
+                            <div class="profile-row" id="profile-dropdown-age"></div>
+                            <div class="profile-row" id="profile-dropdown-team"></div>
+                            <button class="edit-btn" id="dropdown-edit-btn">Edit</button>
+                            <button class="logout-btn" id="dropdown-logout-btn">Logout</button>
+                        </div>`;
+                    nav.appendChild(profileDropdown);
+                }
+                const formattedName = formatName(name);
+                document.getElementById('user-avatar-header').textContent = formattedName ? formattedName[0].toUpperCase() : "U";
+                const picDiv = document.getElementById('profile-dropdown-pic');
+                if (avatarUrl) {
+                    picDiv.innerHTML = `<img src="${avatarUrl}" alt="avatar" class="profile-pic">`;
+                } else {
+                    picDiv.innerHTML = `<div class="profile-initial">${formattedName ? formattedName[0] : "U"}</div>`;
+                }
+                document.getElementById('profile-dropdown-name').textContent = formattedName;
+                document.getElementById('profile-dropdown-email').innerHTML = `<span class="detail-label">Email:</span> <span class="detail-value">${email}</span>`;
+                document.getElementById('profile-dropdown-phone').innerHTML = `<span class="detail-label">Number:</span> <span class="detail-value">${phone ?? "--"}</span>`;
+                document.getElementById('profile-dropdown-address').innerHTML = `<span class="detail-label">Address:</span> <span class="detail-value">${address ?? "--"}</span>`;
+                document.getElementById('profile-dropdown-age').innerHTML = `<span class="detail-label">Age:</span> <span class="detail-value">${age ?? "--"}</span>`;
+                document.getElementById('profile-dropdown-team').innerHTML = `<span class="detail-label">Team:</span> <span class="detail-value">${team ?? "--"}</span>`;
+
+                const avatarBtn = document.getElementById('profile-avatar-btn');
+                const dropdownMenu = document.getElementById('profile-dropdown-menu');
+                const logoutBtn = document.getElementById('dropdown-logout-btn');
+                avatarBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('open');
+                };
+                document.addEventListener('click', function(e) {
+                    if (!dropdownMenu.contains(e.target) && !avatarBtn.contains(e.target)) {
+                        dropdownMenu.classList.remove('open');
+                    }
+                });
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') dropdownMenu.classList.remove('open');
+                });
+                logoutBtn.onclick = async function() {
+                    await supabase.auth.signOut();
+                    window.location.reload();
+                };
+
+                // Modal Edit logic
+                document.getElementById('dropdown-edit-btn').onclick = function () {
+                    document.getElementById('edit-full-name').value = formattedName ?? '';
+                    document.getElementById('edit-phone').value = phone ?? '';
+                    document.getElementById('edit-address').value = address ?? '';
+                    document.getElementById('edit-age').value = age ?? '';
+                    document.getElementById('edit-team').value = team ?? '';
+                    document.getElementById('edit-profile-modal').style.display = 'flex';
+                };
+                document.getElementById('edit-cancel').onclick = function () {
+                    document.getElementById('edit-profile-modal').style.display = 'none';
+                };
+                document.getElementById('edit-profile-form').onsubmit = async function (e) {
+                    e.preventDefault();
+                    const newName = document.getElementById('edit-full-name').value.trim();
+                    const newPhone = document.getElementById('edit-phone').value.trim();
+                    const newAddress = document.getElementById('edit-address').value.trim();
+                    const newAge = document.getElementById('edit-age').value.trim();
+                    const newTeam = document.getElementById('edit-team').value.trim();
+                    let { error } = await supabase
+                        .from('registrations')
+                        .update({
+                            full_name: newName.toLowerCase(),
+                            phone: newPhone,
+                            address: newAddress,
+                            age: newAge,
+                            team: newTeam
+                        })
+                        .eq('email', email);
+                    if (!error) {
+                        document.getElementById('edit-profile-modal').style.display = 'none';
+                        showProfileDropdown(newName, email, avatarUrl, newAge, newAddress, newTeam, newPhone);
+                    } else {
+                        alert('Failed to update profile.' + (error && error.message ? '\n'+error.message : ''));
+                        console.error(error);
+                    }
+                };
+
+               // setTimeout(() => dropdownMenu.classList.add('open'), 250);
+            }
+        });
+    </script>
+</head>
+<body>
+<header>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="AMA Foundation Logo">
+            <span class="logo-text">
+                <span class="logo-orange">AMA</span>&nbsp;<span class="logo-black">Foundation</span>
+            </span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html" class="active">Contact</a></li>
+            <li id="nav-login-btn-li">
+                <a href="login.html" class="login-nav-btn">Login</a>
+            </li>
+            <!-- Profile icon will appear here when logged in -->
+        </ul>
+    </nav>
+</header>
+
+<!-- Modal for Editing Profile -->
+<div id="edit-profile-modal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+        <h2>Edit Personal Info</h2>
+        <form id="edit-profile-form">
+            <div class="modal-form-group">
+                <label for="edit-full-name">Full Name <span class="required">*</span></label>
+                <input type="text" id="edit-full-name" required autocomplete="name" />
+            </div>
+            <div class="modal-form-group">
+                <label for="edit-phone">Phone Number</label>
+                <input type="tel" id="edit-phone" autocomplete="tel" />
+            </div>
+            <div class="modal-form-group">
+                <label for="edit-address">Address</label>
+                <input type="text" id="edit-address" autocomplete="street-address" />
+            </div>
+            <div class="modal-form-group">
+                <label for="edit-age">Age</label>
+                <input type="number" id="edit-age" min="0" autocomplete="bday" />
+            </div>
+            <div class="modal-form-group">
+                <label for="edit-team">Team</label>
+                <input type="text" id="edit-team" />
+            </div>
+            <div class="modal-actions">
+                <button type="button" id="edit-cancel" class="modal-btn cancel">Cancel</button>
+                <button type="submit" class="modal-btn save">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<main>
+    <section class="contact-hero">
+        <h1>Get In <span class="contact-orange">Touch</span></h1>
+        <p>We'd love to hear from you. Reach out with any questions or inquiries.</p>
+    </section>
+    <section>
+        <div class="contact-wrap-onlyform">
+            <div class="contact-title">Contact Us</div>
+            <form class="contact-form" action="https://formspree.io/f/mvgawgen" method="POST">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="your.email@example.com" required>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Your message..." rows="4" required></textarea>
+                <button type="submit">Contact Us</button>
+            </form>
+            <div class="contact-bottom-row">
+                <div class="contact-details">
+                    <strong>Contact</strong>
+                    info@amafoundation.org
+                    <br><br>
+                    <strong>Based in</strong>
+                    Seattle, Washington
+                    <br><br>
+                    <strong>Phone</strong>
+                    (206) 123-4567
+                </div>
+                <div class="contact-social">
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-x-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3 class="footer-bold">AMA Foundation</h3>
+            <p>Empowering youth through basketball.</p>
+        </div>
+        <div class="footer-section">
+            <h3 class="footer-bold">Quick Links</h3>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3 class="footer-bold">Follow Us</h3>
+            <p>
+                <a href="https://www.instagram.com/_amafoundation/" target="_blank">Instagram</a>
+            </p>
+        </div>
+        <div class="footer-section">
+            <h3 class="footer-bold">Contact Info</h3>
+            <p>Seattle, Washington</p>
+            <p>(206) 123-4567</p>
+            <p>AMAFoundation22@gmail.com</p>
+        </div>
+    </div>
+    <p class="footer-bottom">© 2025 <span class="footer-orange">AMA</span> Foundation. All Rights Reserved.</p>
+</footer>
+</body>
+</html>
